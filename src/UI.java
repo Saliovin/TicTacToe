@@ -1,7 +1,13 @@
 import java.util.ArrayList;
 
 public class UI {
-    public void printState(Logic gameLogic) {
+    private Logic gameLogic;
+
+    public UI(Logic gameLogic) {
+        this.gameLogic = gameLogic;
+    }
+
+    public void printState() {
         StringBuilder toPrint = new StringBuilder("_ _ _\n_ _ _\n_ _ _");
 
         for(int i = 0; i < gameLogic.getXPos1().size(); i++) {

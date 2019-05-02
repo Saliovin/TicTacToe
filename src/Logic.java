@@ -14,12 +14,19 @@ public class Logic {
     }
 
     public boolean win(int player) {
-        if(player == 1) {
+        if (player == 1) {
             return checkHorizontal(xPos1) || checkVertical(yPos1) || checkDiagonal(xPos1, yPos1);
+        } else {
+            return checkHorizontal(xPos2) || checkVertical(yPos2) || checkDiagonal(xPos2, yPos2);
         }
-        else {
-            return checkHorizontal(xPos2) || checkVertical(yPos2) || checkDiagonal(xPos1, yPos2);
+    }
+
+    public boolean draw() {
+        if (xPos1.size() + xPos2.size() == 9) {
+            return true;
         }
+
+        return false;
     }
 
     private boolean checkHorizontal(ArrayList<Integer> xPos) {
@@ -27,14 +34,12 @@ public class Logic {
         int counter1 = 0;
         int counter2 = 0;
 
-        for(int i = 0; i < xPos.size(); i++) {
-            if(xPos.get(i) == 0) {
+        for (Integer xPo : xPos) {
+            if (xPo == 0) {
                 counter0++;
-            }
-            else if(xPos.get(i) == 1) {
+            } else if (xPo == 1) {
                 counter1++;
-            }
-            else {
+            } else {
                 counter2++;
             }
         }
@@ -47,14 +52,12 @@ public class Logic {
         int counter1 = 0;
         int counter2 = 0;
 
-        for(int i = 0; i < yPos.size(); i++) {
-            if(yPos.get(i) == 0) {
+        for (Integer yPo : yPos) {
+            if (yPo == 0) {
                 counter0++;
-            }
-            else if(yPos.get(i) == 1) {
+            } else if (yPo == 1) {
                 counter1++;
-            }
-            else {
+            } else {
                 counter2++;
             }
         }
@@ -66,11 +69,11 @@ public class Logic {
         int counter0 = 0;
         int counter1 = 0;
 
-        for(int i = 0; i < xPos.size(); i++) {
-            if(xPos.get(i).equals(yPos.get(i))) {
+        for (int i = 0; i < xPos.size(); i++) {
+            if (xPos.get(i).equals(yPos.get(i))) {
                 counter0++;
             }
-            else if(yPos.get(i) == (xPos.size() - xPos.get(i))) {
+            if (xPos.get(i) == (2 - yPos.get(i))) {
                 counter1++;
             }
         }
@@ -79,12 +82,15 @@ public class Logic {
     }
 
     public boolean add(int player, int xPos, int yPos) {
-        if(!isConflict(xPos, yPos)) {
-            if(player == 1) {
+        if (xPos > 2 || yPos > 2) {
+            return false;
+        }
+
+        if (!isConflict(xPos, yPos)) {
+            if (player == 1) {
                 xPos1.add(xPos);
                 yPos1.add(yPos);
-            }
-            else {
+            } else {
                 xPos2.add(xPos);
                 yPos2.add(yPos);
             }
@@ -95,12 +101,11 @@ public class Logic {
     }
 
     private boolean isConflict(int xPos, int yPos) {
-        for(int i = 0; i < xPos1.size(); i++) {
-            if((xPos1.get(i) == xPos && yPos1.get(i) == yPos)) {
+        for (int i = 0; i < xPos1.size(); i++) {
+            if ((xPos1.get(i) == xPos && yPos1.get(i) == yPos)) {
                 return true;
-            }
-            else if(!(i == xPos2.size())) {
-                if(xPos2.get(i) == xPos && yPos2.get(i) == yPos) {
+            } else if (!(i == xPos2.size())) {
+                if (xPos2.get(i) == xPos && yPos2.get(i) == yPos) {
                     return true;
                 }
             }
