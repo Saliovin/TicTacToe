@@ -1,16 +1,19 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToe {
     private Logic gameLogic;
     private UI userInterface;
     private Scanner reader;
+    private Random rng;
 
 
     public TicTacToe() {
         gameLogic = new Logic();
         userInterface = new UI(gameLogic);
         reader = new Scanner(System.in);
+        rng = new Random();
     }
 
     public void start() {

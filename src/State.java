@@ -9,5 +9,7 @@ public class State {
         moves = new ArrayList<>();
     }
 
-
+    public void addMove(String move) {
+        moves.add(move);
+    }
 }
