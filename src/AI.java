@@ -14,6 +14,7 @@ public class AI {
         data1 = new HashMap<>();
         data2 = new HashMap<>();
         tempData1 = new HashMap<>();
+        tempData2 = new HashMap<>();
         this.gameLogic = gameLogic;
         this.rng = rng;
     }
@@ -47,6 +48,33 @@ public class AI {
         }
         else {
             tempData2.put(state, move);
+        }
+    }
+
+    public void addData(int player) {
+        if(player == 1) {
+            for(String state: tempData1.keySet()) {
+                if(data1.containsKey(state)) {
+                    data1.get(state).add(tempData1.get(state));
+                }
+                else {
+                    ArrayList<String> moves = new ArrayList<>();
+                    moves.add(tempData1.get(state));
+                    data1.put(state, moves);
+                }
+            }
+        }
+        else {
+            for(String state: tempData2.keySet()) {
+                if(data2.containsKey(state)) {
+                    data2.get(state).add(tempData2.get(state));
+                }
+                else {
+                    ArrayList<String> moves = new ArrayList<>();
+                    moves.add(tempData2.get(state));
+                    data2.put(state, moves);
+                }
+            }
         }
     }
 

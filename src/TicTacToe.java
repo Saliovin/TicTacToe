@@ -1,50 +1,63 @@
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class TicTacToe {
     private Logic gameLogic;
     private UI userInterface;
-    private Scanner reader;
     private Random rng;
-
+    private int option;
 
     public TicTacToe() {
         gameLogic = new Logic();
         userInterface = new UI(gameLogic);
-        reader = new Scanner(System.in);
         rng = new Random();
     }
 
     public void start() {
+        while(true) {
+            userInterface.printMainMenu();
+            option = userInterface.getOption();
+            int rounds = 1;
+
+            if(option == 4) {
+                rounds = userInterface.getNumberOfRounds();
+            }
+            else if(option == 5) {
+                break;
+            }
+
+            while(rounds > 0) {
+                startGame();
+                rounds--;
+            }
+        }
+    }
+
+    private void startGame() {
+
         int playerTurn = 1;
 
         while(true) {
             userInterface.printState();
-            System.out.println("Player " + playerTurn +"'s turn");
+            userInterface.printTurn(playerTurn);
 
             while(true) {
-                System.out.print("\tInput X coordinate: ");
-                int xPos = reader.nextInt();
-                System.out.print("\tInput Y coordinate: ");
-                int yPos = reader.nextInt();
+                int xPos = userInterface.getXCoordinate();
+                int yPos = userInterface.getYCoordinate();
 
                 if(gameLogic.add(playerTurn, xPos, yPos)) {
                     break;
                 }
 
-                System.out.println("Wrong coordinate");
+                userInterface.printError(2);
             }
 
 
             if(gameLogic.win(playerTurn)) {
-                userInterface.printState();
-                System.out.println("PLAYER " + playerTurn + " WINS!");
+                userInterface.printWinner(playerTurn);
                 break;
             }
             else if(gameLogic.draw()) {
-                userInterface.printState();
-                System.out.println("DRAW!");
+                userInterface.printDraw();
                 break;
             }
 
