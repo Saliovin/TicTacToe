@@ -11,13 +11,13 @@ public class UI {
     }
 
     public void printState() {
-        StringBuilder toPrint = new StringBuilder("_ _ _\n_ _ _\n_ _ _");
+        StringBuilder toPrint = new StringBuilder("0 1 2\n3 4 5\n6 7 8");
 
-        for(int i = 0; i < gameLogic.getXPos1().size(); i++) {
-            toPrint.setCharAt(2*gameLogic.getXPos1().get(i) + 6*gameLogic.getYPos1().get(i), 'X');
+        for(int i = 0; i < gameLogic.getPosArray1().size(); i++) {
+            toPrint.setCharAt(2*gameLogic.getPosArray1().get(i), 'X');
         }
-        for(int i = 0; i < gameLogic.getXPos2().size(); i++) {
-            toPrint.setCharAt(2*gameLogic.getXPos2().get(i) + 6*gameLogic.getYPos2().get(i), 'O');
+        for(int i = 0; i < gameLogic.getPosArray2().size(); i++) {
+            toPrint.setCharAt(2*gameLogic.getPosArray2().get(i), '•');
         }
 
         System.out.println(toPrint);
@@ -43,7 +43,7 @@ public class UI {
                 System.out.println("Wrong input");
                 break;
             case 2:
-                System.out.println("Wrong coordinate");
+                System.out.println("Wrong position");
                 break;
         }
     }
@@ -59,13 +59,8 @@ public class UI {
         System.out.print("Input option: ");
     }
 
-    public int getXCoordinate() {
-        System.out.print("\tInput X coordinate: ");
-        return reader.nextInt();
-    }
-
-    public int getYCoordinate() {
-        System.out.print("\tInput X coordinate: ");
+    public int getPosition() {
+        System.out.print("\tInput position(0-8): ");
         return reader.nextInt();
     }
 

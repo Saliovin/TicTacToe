@@ -5,6 +5,8 @@ public class TicTacToe {
     private UI userInterface;
     private Random rng;
     private int option;
+    private boolean player1AI;
+    private boolean player2AI;
 
     public TicTacToe() {
         gameLogic = new Logic();
@@ -18,8 +20,22 @@ public class TicTacToe {
             option = userInterface.getOption();
             int rounds = 1;
 
-            if(option == 4) {
+            if(option == 1) {
+                player1AI = false;
+                player2AI = false;
+            }
+            else if(option == 2) {
+                player1AI = false;
+                player2AI = true;
+            }
+            else if(option == 3) {
+                player1AI = true;
+                player2AI = false;
+            }
+            else if(option == 4) {
                 rounds = userInterface.getNumberOfRounds();
+                player1AI = true;
+                player2AI = true;
             }
             else if(option == 5) {
                 break;
@@ -33,18 +49,20 @@ public class TicTacToe {
     }
 
     private void startGame() {
-
         int playerTurn = 1;
+        gameLogic.reset();
 
         while(true) {
             userInterface.printState();
             userInterface.printTurn(playerTurn);
 
+            //if(playerTurn == 1 && player1AI ==true) {
+                //gameLogic.add(playerTurn, )
+            //}
             while(true) {
-                int xPos = userInterface.getXCoordinate();
-                int yPos = userInterface.getYCoordinate();
+                int pos = userInterface.getPosition();
 
-                if(gameLogic.add(playerTurn, xPos, yPos)) {
+                if(gameLogic.add(playerTurn, pos)) {
                     break;
                 }
 

@@ -1,43 +1,39 @@
 import java.util.ArrayList;
 
 public class Logic {
-    private ArrayList<Integer> xPos1;
-    private ArrayList<Integer> yPos1;
-    private ArrayList<Integer> xPos2;
-    private ArrayList<Integer> yPos2;
+    private ArrayList<Integer> posArray1;
+    private ArrayList<Integer> posArray2;
 
     public Logic() {
-        xPos1 = new ArrayList<>();
-        yPos1 = new ArrayList<>();
-        xPos2 = new ArrayList<>();
-        yPos2 = new ArrayList<>();
+        posArray1 = new ArrayList<>();
+        posArray2 = new ArrayList<>();
     }
 
     public boolean win(int player) {
         if (player == 1) {
-            return checkHorizontal(xPos1) || checkVertical(yPos1) || checkDiagonal(xPos1, yPos1);
+            return checkHorizontal(posArray1) || checkVertical(posArray1) || checkDiagonal(posArray1);
         } else {
-            return checkHorizontal(xPos2) || checkVertical(yPos2) || checkDiagonal(xPos2, yPos2);
+            return checkHorizontal(posArray2) || checkVertical(posArray2) || checkDiagonal(posArray2);
         }
     }
 
     public boolean draw() {
-        if (xPos1.size() + xPos2.size() == 9) {
+        if (posArray1.size() + posArray2.size() == 9) {
             return true;
         }
 
         return false;
     }
 
-    private boolean checkHorizontal(ArrayList<Integer> xPos) {
+    private boolean checkHorizontal(ArrayList<Integer> posArray) {
         int counter0 = 0;
         int counter1 = 0;
         int counter2 = 0;
 
-        for (Integer xPo : xPos) {
-            if (xPo == 0) {
+        for (Integer i : posArray) {
+            if (i < 3) {
                 counter0++;
-            } else if (xPo == 1) {
+            } else if (i < 6) {
                 counter1++;
             } else {
                 counter2++;
@@ -47,15 +43,15 @@ public class Logic {
         return counter0 == 3 || counter1 == 3 || counter2 == 3;
     }
 
-    private boolean checkVertical(ArrayList<Integer> yPos) {
+    private boolean checkVertical(ArrayList<Integer> posArray) {
         int counter0 = 0;
         int counter1 = 0;
         int counter2 = 0;
 
-        for (Integer yPo : yPos) {
-            if (yPo == 0) {
+        for (Integer i : posArray) {
+            if ((i % 3) == 0) {
                 counter0++;
-            } else if (yPo == 1) {
+            } else if ((i == 1) || (i == 4) || (i == 7)) {
                 counter1++;
             } else {
                 counter2++;
@@ -65,15 +61,19 @@ public class Logic {
         return counter0 == 3 || counter1 == 3 || counter2 == 3;
     }
 
-    private boolean checkDiagonal(ArrayList<Integer> xPos, ArrayList<Integer> yPos) {
+    private boolean checkDiagonal(ArrayList<Integer> posArray) {
         int counter0 = 0;
         int counter1 = 0;
 
-        for (int i = 0; i < xPos.size(); i++) {
-            if (xPos.get(i).equals(yPos.get(i))) {
+        for (Integer i : posArray) {
+            if ((i % 4) == 0) {
                 counter0++;
+
+                if(i == 4) {
+                    counter1++;
+                }
             }
-            if (xPos.get(i) == (2 - yPos.get(i))) {
+            else if ((i % 2) == 0) {
                 counter1++;
             }
         }
@@ -81,18 +81,16 @@ public class Logic {
         return counter0 == 3 || counter1 == 3;
     }
 
-    public boolean add(int player, int xPos, int yPos) {
-        if (xPos > 2 || yPos > 2) {
+    public boolean add(int player, Integer pos) {
+        if ((pos > 8) || (pos < 0)) {
             return false;
         }
 
-        if (!isConflict(xPos, yPos)) {
+        if (!isConflict(pos)) {
             if (player == 1) {
-                xPos1.add(xPos);
-                yPos1.add(yPos);
+                posArray1.add(pos);
             } else {
-                xPos2.add(xPos);
-                yPos2.add(yPos);
+                posArray2.add(pos);
             }
             return true;
         }
@@ -100,33 +98,20 @@ public class Logic {
         return false;
     }
 
-    private boolean isConflict(int xPos, int yPos) {
-        for (int i = 0; i < xPos1.size(); i++) {
-            if ((xPos1.get(i) == xPos && yPos1.get(i) == yPos)) {
-                return true;
-            } else if (!(i == xPos2.size())) {
-                if (xPos2.get(i) == xPos && yPos2.get(i) == yPos) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+    private boolean isConflict(Integer pos) {
+        return posArray1.contains(pos) || posArray2.contains(pos);
     }
 
-    public ArrayList<Integer> getXPos1() {
-        return xPos1;
+    public void reset() {
+        posArray1.clear();
+        posArray2.clear();
     }
 
-    public ArrayList<Integer> getYPos1() {
-        return yPos1;
+    public ArrayList<Integer> getPosArray1() {
+        return posArray1;
     }
 
-    public ArrayList<Integer> getXPos2() {
-        return xPos2;
-    }
-
-    public ArrayList<Integer> getYPos2() {
-        return yPos2;
+    public ArrayList<Integer> getPosArray2() {
+        return posArray2;
     }
 }

@@ -3,10 +3,10 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class AI {
-    private HashMap<String, ArrayList<String>> data1;
-    private HashMap<String, ArrayList<String>> data2;
-    private HashMap<String, String> tempData1;
-    private HashMap<String, String> tempData2;
+    private HashMap<String, ArrayList<Integer>> data1;
+    private HashMap<String, ArrayList<Integer>> data2;
+    private HashMap<String, Integer> tempData1;
+    private HashMap<String, Integer> tempData2;
     private Logic gameLogic;
     private Random rng;
 
@@ -19,7 +19,7 @@ public class AI {
         this.rng = rng;
     }
 
-    public String move(int player) {
+    public int move(int player) {
         String state = getCurrentState();
         if(player == 1) {
             if(data1.containsKey(state)) {
@@ -39,10 +39,10 @@ public class AI {
             }
         }
 
-        return spaces.get(rng.nextInt(spaces.size())).toString();
+        return spaces.get(rng.nextInt(spaces.size()));
     }
 
-    public void addTempData(String state, String move, int player) {
+    public void addTempData(String state, Integer move, int player) {
         if(player == 1) {
             tempData1.put(state, move);
         }
@@ -58,7 +58,7 @@ public class AI {
                     data1.get(state).add(tempData1.get(state));
                 }
                 else {
-                    ArrayList<String> moves = new ArrayList<>();
+                    ArrayList<Integer> moves = new ArrayList<>();
                     moves.add(tempData1.get(state));
                     data1.put(state, moves);
                 }
@@ -70,7 +70,7 @@ public class AI {
                     data2.get(state).add(tempData2.get(state));
                 }
                 else {
-                    ArrayList<String> moves = new ArrayList<>();
+                    ArrayList<Integer> moves = new ArrayList<>();
                     moves.add(tempData2.get(state));
                     data2.put(state, moves);
                 }
@@ -81,11 +81,11 @@ public class AI {
     private String getCurrentState() {
         StringBuilder state = new StringBuilder("         ");
 
-        for(int i = 0; i < gameLogic.getXPos1().size(); i++) {
-            state.setCharAt(gameLogic.getXPos1().get(i) + 3*gameLogic.getYPos1().get(i), 'X');
+        for(int i = 0; i < gameLogic.getPosArray1().size(); i++) {
+            state.setCharAt(gameLogic.getPosArray1().get(i), 'X');
         }
-        for(int i = 0; i < gameLogic.getXPos2().size(); i++) {
-            state.setCharAt(gameLogic.getXPos2().get(i) + 3*gameLogic.getYPos2().get(i), 'O');
+        for(int i = 0; i < gameLogic.getPosArray2().size(); i++) {
+            state.setCharAt(gameLogic.getPosArray2().get(i), '•');
         }
 
         return state.toString();
