@@ -50,10 +50,10 @@ public class UI {
 
     public void printMainMenu() {
         System.out.println("Welcome to TicTacToe!");
-        System.out.println("Modes:");
+        System.out.println("Menu:");
         System.out.println("\t1 - Player vs player");
         System.out.println("\t2 - Player vs AI");
-        System.out.println("\t2 - AI vs Player");
+        System.out.println("\t3 - AI vs Player");
         System.out.println("\t4 - AI vs AI");
         System.out.println("\t5 - Exit");
         System.out.print("Input option: ");

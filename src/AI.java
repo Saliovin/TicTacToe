@@ -7,28 +7,25 @@ public class AI {
     private HashMap<String, ArrayList<Integer>> data2;
     private HashMap<String, Integer> tempData1;
     private HashMap<String, Integer> tempData2;
-    private Logic gameLogic;
     private Random rng;
 
-    public AI(Logic gameLogic, Random rng) {
+    public AI(TicTacToe game, Random rng) {
         data1 = new HashMap<>();
         data2 = new HashMap<>();
         tempData1 = new HashMap<>();
         tempData2 = new HashMap<>();
-        this.gameLogic = gameLogic;
         this.rng = rng;
     }
 
-    public int move(int player) {
-        String state = getCurrentState();
+    public int move(int player, String state) {
         if(player == 1) {
             if(data1.containsKey(state)) {
-                return data1.get(state).get(rng.nextInt(state.length()));
+                return data1.get(state).get(rng.nextInt(data1.get(state).size()));
             }
         }
         else {
             if(data2.containsKey(state)) {
-                return data2.get(state).get(rng.nextInt(state.length()));
+                return data2.get(state).get(rng.nextInt(data2.get(state).size()));
             }
         }
 
@@ -76,18 +73,8 @@ public class AI {
                 }
             }
         }
-    }
 
-    private String getCurrentState() {
-        StringBuilder state = new StringBuilder("         ");
-
-        for(int i = 0; i < gameLogic.getPosArray1().size(); i++) {
-            state.setCharAt(gameLogic.getPosArray1().get(i), 'X');
-        }
-        for(int i = 0; i < gameLogic.getPosArray2().size(); i++) {
-            state.setCharAt(gameLogic.getPosArray2().get(i), '•');
-        }
-
-        return state.toString();
+        tempData1.clear();
+        tempData2.clear();
     }
 }
