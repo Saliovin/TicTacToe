@@ -4,42 +4,44 @@ public class TicTacToe {
     private Logic gameLogic;
     private UI userInterface;
     private Random rng;
-    private int option;
     private boolean player1AI;
     private boolean player2AI;
+    private  boolean trainingMode;
     private AI computer;
 
     public TicTacToe() {
         gameLogic = new Logic();
         userInterface = new UI(gameLogic);
         rng = new Random();
-        computer = new AI(this, rng);
+        player1AI = false;
+        player2AI = false;
+        trainingMode = false;
+        computer = new AI(rng);
     }
 
     public void start() {
         while(true) {
             userInterface.printMainMenu();
-            option = userInterface.getOption();
+            int option = userInterface.getOption();
             int rounds = 1;
 
-            if(option == 1) {
-                player1AI = false;
-                player2AI = false;
-            }
-            else if(option == 2) {
-                player1AI = false;
+            if(option == 2) {
                 player2AI = true;
             }
             else if(option == 3) {
                 player1AI = true;
-                player2AI = false;
             }
             else if(option == 4) {
                 rounds = userInterface.getNumberOfRounds();
+                trainingMode = true;
                 player1AI = true;
                 player2AI = true;
             }
             else if(option == 5) {
+                rounds = 0;
+                userInterface.printAIStatistics(computer);
+            }
+            else if(option == 6){
                 break;
             }
 
@@ -47,6 +49,10 @@ public class TicTacToe {
                 startGame();
                 rounds--;
             }
+
+            player1AI = false;
+            player2AI = false;
+            trainingMode = false;
         }
     }
 
@@ -61,7 +67,7 @@ public class TicTacToe {
             Integer move;
 
             if(((playerTurn == 1) && player1AI) || ((playerTurn == 2) && player2AI)) {
-                move = computer.move(playerTurn, state);
+                move = computer.move(playerTurn, state, trainingMode);
                 gameLogic.add(playerTurn, move);
             }
             else {
@@ -79,10 +85,7 @@ public class TicTacToe {
             computer.addTempData(state, move, playerTurn);
 
             if(gameLogic.win(playerTurn)) {
-                if(player1AI || player2AI) {
-                    computer.addData(playerTurn);
-                }
-
+                computer.addData(playerTurn);
                 userInterface.printWinner(playerTurn);
                 break;
             }

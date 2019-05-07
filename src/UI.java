@@ -54,8 +54,9 @@ public class UI {
         System.out.println("\t1 - Player vs player");
         System.out.println("\t2 - Player vs AI");
         System.out.println("\t3 - AI vs Player");
-        System.out.println("\t4 - AI vs AI");
-        System.out.println("\t5 - Exit");
+        System.out.println("\t4 - Train AI with rng");
+        System.out.println("\t5 - AI statistics");
+        System.out.println("\t6 - Exit");
         System.out.print("Input option: ");
     }
 
@@ -67,7 +68,7 @@ public class UI {
     public int getOption() {
         int mode = reader.nextInt();
 
-        while(mode > 5) {
+        while(mode > 6) {
             printError(1);
             System.out.print("Input option: ");
         }
@@ -78,5 +79,18 @@ public class UI {
     public int getNumberOfRounds() {
         System.out.print("Number of rounds: ");
         return reader.nextInt();
+    }
+
+    public void printAIStatistics(AI computer) {
+        System.out.println("AI statistics:");
+        System.out.println("  Games recorded: " + (computer.getSavedGames1() + computer.getSavedGames2()));
+        System.out.println("    As player 1: " + computer.getSavedGames1());
+        System.out.println("    As player 2: " + computer.getSavedGames2());
+        System.out.println("  States saved: " + (computer.getStates(1) + computer.getStates(2)));
+        System.out.println("    As player 1: " + computer.getStates(1));
+        System.out.println("    As player 2: " + computer.getStates(2));
+        System.out.println("  Moves saved: " + (computer.getMoves(1) + computer.getMoves(2)));
+        System.out.println("    As player 1: " + computer.getMoves(1));
+        System.out.println("    As player 2: " + computer.getMoves(2));
     }
 }

@@ -8,24 +8,30 @@ public class AI {
     private HashMap<String, Integer> tempData1;
     private HashMap<String, Integer> tempData2;
     private Random rng;
+    private int savedGames1;
+    private int savedGames2;
 
-    public AI(TicTacToe game, Random rng) {
+    public AI(Random rng) {
         data1 = new HashMap<>();
         data2 = new HashMap<>();
         tempData1 = new HashMap<>();
         tempData2 = new HashMap<>();
         this.rng = rng;
+        savedGames1 = 0;
+        savedGames2 = 0;
     }
 
-    public int move(int player, String state) {
-        if(player == 1) {
-            if(data1.containsKey(state)) {
-                return data1.get(state).get(rng.nextInt(data1.get(state).size()));
+    public int move(int player, String state, boolean trainingMode) {
+        if(!trainingMode) {
+            if(player == 1) {
+                if(data1.containsKey(state)) {
+                    return data1.get(state).get(rng.nextInt(data1.get(state).size()));
+                }
             }
-        }
-        else {
-            if(data2.containsKey(state)) {
-                return data2.get(state).get(rng.nextInt(data2.get(state).size()));
+            else {
+                if(data2.containsKey(state)) {
+                    return data2.get(state).get(rng.nextInt(data2.get(state).size()));
+                }
             }
         }
 
@@ -49,32 +55,100 @@ public class AI {
     }
 
     public void addData(int player) {
+        boolean addedNew = false;
+
         if(player == 1) {
             for(String state: tempData1.keySet()) {
                 if(data1.containsKey(state)) {
-                    data1.get(state).add(tempData1.get(state));
+                    if(!data1.get(state).contains(tempData1.get(state))) {
+                        data1.get(state).add(tempData1.get(state));
+                        if(!addedNew) {
+                            addedNew = true;
+                        }
+                    }
                 }
                 else {
                     ArrayList<Integer> moves = new ArrayList<>();
                     moves.add(tempData1.get(state));
                     data1.put(state, moves);
+                    if(!addedNew) {
+                        addedNew = true;
+                    }
                 }
+            }
+
+            if(addedNew) {
+                savedGames1++;
             }
         }
         else {
             for(String state: tempData2.keySet()) {
                 if(data2.containsKey(state)) {
-                    data2.get(state).add(tempData2.get(state));
+                    if(!data2.get(state).contains(tempData2.get(state))) {
+                        data2.get(state).add(tempData2.get(state));
+                        if(!addedNew) {
+                            addedNew = true;
+                        }
+                    }
                 }
                 else {
                     ArrayList<Integer> moves = new ArrayList<>();
                     moves.add(tempData2.get(state));
                     data2.put(state, moves);
+                    if(!addedNew) {
+                        addedNew = true;
+                    }
                 }
+            }
+
+            if(addedNew) {
+                savedGames2++;
             }
         }
 
         tempData1.clear();
         tempData2.clear();
+    }
+
+    public HashMap<String, ArrayList<Integer>> getData1() {
+        return data1;
+    }
+
+    public HashMap<String, ArrayList<Integer>> getData2() {
+        return data2;
+    }
+
+    public int getSavedGames1() {
+        return savedGames1;
+    }
+
+    public int getSavedGames2() {
+        return savedGames2;
+    }
+
+    public int getStates(int player) {
+        if(player == 1) {
+            return data1.keySet().size();
+        }
+        else {
+            return data2.keySet().size();
+        }
+    }
+
+    public int getMoves(int player) {
+        int counter = 0;
+
+        if(player == 1) {
+            for(ArrayList i : data1.values()) {
+                counter += i.size();
+            }
+        }
+        else {
+            for(ArrayList i : data2.values()) {
+                counter += i.size();
+            }
+        }
+
+        return counter;
     }
 }
