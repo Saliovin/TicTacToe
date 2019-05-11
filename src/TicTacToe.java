@@ -1,26 +1,23 @@
-import java.util.Random;
-
 public class TicTacToe {
     private Logic gameLogic;
     private UI userInterface;
-    private Random rng;
     private boolean player1AI;
     private boolean player2AI;
-    private  boolean trainingMode;
+    private boolean trainingMode;
     private AI computer;
 
     public TicTacToe() {
         gameLogic = new Logic();
         userInterface = new UI(gameLogic);
-        rng = new Random();
-        player1AI = false;
-        player2AI = false;
-        trainingMode = false;
-        computer = new AI(rng);
+        computer = new AI();
     }
 
     public void start() {
         while(true) {
+            player1AI = false;
+            player2AI = false;
+            trainingMode = false;
+
             userInterface.printMainMenu();
             int option = userInterface.getOption();
             int rounds = 1;
@@ -49,11 +46,20 @@ public class TicTacToe {
                 startGame();
                 rounds--;
             }
-
-            player1AI = false;
-            player2AI = false;
-            trainingMode = false;
         }
+    }
+
+    public String getCurrentState() {
+        StringBuilder state = new StringBuilder("         ");
+
+        for(int i = 0; i < gameLogic.getPosArray1().size(); i++) {
+            state.setCharAt(gameLogic.getPosArray1().get(i), 'X');
+        }
+        for(int i = 0; i < gameLogic.getPosArray2().size(); i++) {
+            state.setCharAt(gameLogic.getPosArray2().get(i), '•');
+        }
+
+        return state.toString();
     }
 
     private void startGame() {
@@ -103,18 +109,5 @@ public class TicTacToe {
 
             System.out.println();
         }
-    }
-
-    public String getCurrentState() {
-        StringBuilder state = new StringBuilder("         ");
-
-        for(int i = 0; i < gameLogic.getPosArray1().size(); i++) {
-            state.setCharAt(gameLogic.getPosArray1().get(i), 'X');
-        }
-        for(int i = 0; i < gameLogic.getPosArray2().size(); i++) {
-            state.setCharAt(gameLogic.getPosArray2().get(i), '•');
-        }
-
-        return state.toString();
     }
 }

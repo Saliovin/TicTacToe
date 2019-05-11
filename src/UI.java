@@ -60,27 +60,6 @@ public class UI {
         System.out.print("Input option: ");
     }
 
-    public int getPosition() {
-        System.out.print("\tInput position(0-8): ");
-        return reader.nextInt();
-    }
-
-    public int getOption() {
-        int mode = reader.nextInt();
-
-        while(mode > 6) {
-            printError(1);
-            System.out.print("Input option: ");
-        }
-
-        return mode;
-    }
-
-    public int getNumberOfRounds() {
-        System.out.print("Number of rounds: ");
-        return reader.nextInt();
-    }
-
     public void printAIStatistics(AI computer) {
         System.out.println("AI statistics:");
         System.out.println("  Games recorded: " + (computer.getSavedGames1() + computer.getSavedGames2()));
@@ -92,5 +71,27 @@ public class UI {
         System.out.println("  Moves saved: " + (computer.getMoves(1) + computer.getMoves(2)));
         System.out.println("    As player 1: " + computer.getMoves(1));
         System.out.println("    As player 2: " + computer.getMoves(2));
+    }
+
+    public int getPosition() {
+        System.out.print("\tInput position(0-8): ");
+        return reader.nextInt();
+    }
+
+    public int getOption() {
+        int mode = reader.nextInt();
+
+        while(mode > 6) {
+            printError(1);
+            System.out.print("Input option: ");
+            mode = reader.nextInt();
+        }
+
+        return mode;
+    }
+
+    public int getNumberOfRounds() {
+        System.out.print("Number of rounds: ");
+        return reader.nextInt();
     }
 }

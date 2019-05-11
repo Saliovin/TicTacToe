@@ -18,11 +18,41 @@ public class Logic {
     }
 
     public boolean draw() {
-        if (posArray1.size() + posArray2.size() == 9) {
+        if ((posArray1.size() + posArray2.size()) == 9) {
             return true;
         }
 
         return false;
+    }
+
+    public boolean add(int player, Integer pos) {
+        if ((pos > 8) || (pos < 0)) {
+            return false;
+        }
+
+        if (!isConflict(pos)) {
+            if (player == 1) {
+                posArray1.add(pos);
+            } else {
+                posArray2.add(pos);
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    public void reset() {
+        posArray1.clear();
+        posArray2.clear();
+    }
+
+    public ArrayList<Integer> getPosArray1() {
+        return posArray1;
+    }
+
+    public ArrayList<Integer> getPosArray2() {
+        return posArray2;
     }
 
     private boolean checkHorizontal(ArrayList<Integer> posArray) {
@@ -69,11 +99,10 @@ public class Logic {
             if ((i % 4) == 0) {
                 counter0++;
 
-                if(i == 4) {
+                if (i == 4) {
                     counter1++;
                 }
-            }
-            else if ((i % 2) == 0) {
+            } else if ((i % 2) == 0) {
                 counter1++;
             }
         }
@@ -81,37 +110,7 @@ public class Logic {
         return counter0 == 3 || counter1 == 3;
     }
 
-    public boolean add(int player, Integer pos) {
-        if ((pos > 8) || (pos < 0)) {
-            return false;
-        }
-
-        if (!isConflict(pos)) {
-            if (player == 1) {
-                posArray1.add(pos);
-            } else {
-                posArray2.add(pos);
-            }
-            return true;
-        }
-
-        return false;
-    }
-
     private boolean isConflict(Integer pos) {
         return posArray1.contains(pos) || posArray2.contains(pos);
-    }
-
-    public void reset() {
-        posArray1.clear();
-        posArray2.clear();
-    }
-
-    public ArrayList<Integer> getPosArray1() {
-        return posArray1;
-    }
-
-    public ArrayList<Integer> getPosArray2() {
-        return posArray2;
     }
 }

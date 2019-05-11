@@ -11,12 +11,12 @@ public class AI {
     private int savedGames1;
     private int savedGames2;
 
-    public AI(Random rng) {
+    public AI() {
         data1 = new HashMap<>();
         data2 = new HashMap<>();
         tempData1 = new HashMap<>();
         tempData2 = new HashMap<>();
-        this.rng = rng;
+        rng = new Random();
         savedGames1 = 0;
         savedGames2 = 0;
     }
@@ -108,14 +108,6 @@ public class AI {
 
         tempData1.clear();
         tempData2.clear();
-    }
-
-    public HashMap<String, ArrayList<Integer>> getData1() {
-        return data1;
-    }
-
-    public HashMap<String, ArrayList<Integer>> getData2() {
-        return data2;
     }
 
     public int getSavedGames1() {
