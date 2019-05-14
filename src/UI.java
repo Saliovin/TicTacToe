@@ -1,3 +1,5 @@
+//This class handles all printing as well as user input.
+
 import java.util.Scanner;
 
 public class UI {
@@ -11,14 +13,18 @@ public class UI {
     }
 
     public void printState() {
-        StringBuilder toPrint = new StringBuilder("0 1 2\n3 4 5\n6 7 8");
+        StringBuilder toPrint = new StringBuilder("_ _ _\n_ _ _\n_ _ _");
 
-        for(int i = 0; i < gameLogic.getPosArray1().size(); i++) {
-            toPrint.setCharAt(2*gameLogic.getPosArray1().get(i), 'X');
+        for(int i = 0; i < gameLogic.getPlayer1PositionsArray().size(); i++) {
+            toPrint.setCharAt(2*gameLogic.getPlayer1PositionsArray().get(i), 'X');
         }
-        for(int i = 0; i < gameLogic.getPosArray2().size(); i++) {
-            toPrint.setCharAt(2*gameLogic.getPosArray2().get(i), '•');
+        for(int i = 0; i < gameLogic.getPlayer2PositionsArray().size(); i++) {
+            toPrint.setCharAt(2*gameLogic.getPlayer2PositionsArray().get(i), 'O');
         }
+
+        toPrint.insert(5, " 0 1 2"); //Adds position numbers to the side of the board
+        toPrint.insert(17, " 3 4 5");
+        toPrint.insert(29, " 6 7 8");
 
         System.out.println(toPrint);
     }
@@ -62,15 +68,15 @@ public class UI {
 
     public void printAIStatistics(AI computer) {
         System.out.println("AI statistics:");
-        System.out.println("  Games recorded: " + (computer.getSavedGames1() + computer.getSavedGames2()));
-        System.out.println("    As player 1: " + computer.getSavedGames1());
-        System.out.println("    As player 2: " + computer.getSavedGames2());
-        System.out.println("  States saved: " + (computer.getStates(1) + computer.getStates(2)));
-        System.out.println("    As player 1: " + computer.getStates(1));
-        System.out.println("    As player 2: " + computer.getStates(2));
-        System.out.println("  Moves saved: " + (computer.getMoves(1) + computer.getMoves(2)));
-        System.out.println("    As player 1: " + computer.getMoves(1));
-        System.out.println("    As player 2: " + computer.getMoves(2));
+        System.out.println("  Games recorded: " + (computer.getSavedGamesCount(1) + computer.getSavedGamesCount(2)));
+        System.out.println("    As player 1: " + computer.getSavedGamesCount(1));
+        System.out.println("    As player 2: " + computer.getSavedGamesCount(2));
+        System.out.println("  States saved: " + (computer.getStatesCount(1) + computer.getStatesCount(2)));
+        System.out.println("    As player 1: " + computer.getStatesCount(1));
+        System.out.println("    As player 2: " + computer.getStatesCount(2));
+        System.out.println("  Moves saved: " + (computer.getMovesCount(1) + computer.getMovesCount(2)));
+        System.out.println("    As player 1: " + computer.getMovesCount(1));
+        System.out.println("    As player 2: " + computer.getMovesCount(2));
     }
 
     public int getPosition() {

@@ -1,40 +1,42 @@
+//This class handles the logic of the game like for example checking for win conditions.
+
 import java.util.ArrayList;
 
 public class Logic {
-    private ArrayList<Integer> posArray1;
-    private ArrayList<Integer> posArray2;
+    private ArrayList<Integer> player1PositionsArray;
+    private ArrayList<Integer> player2PositionsArray;
 
     public Logic() {
-        posArray1 = new ArrayList<>();
-        posArray2 = new ArrayList<>();
+        player1PositionsArray = new ArrayList<>();
+        player2PositionsArray = new ArrayList<>();
     }
 
     public boolean win(int player) {
         if (player == 1) {
-            return checkHorizontal(posArray1) || checkVertical(posArray1) || checkDiagonal(posArray1);
+            return checkHorizontal(player1PositionsArray) || checkVertical(player1PositionsArray) || checkDiagonal(player1PositionsArray);
         } else {
-            return checkHorizontal(posArray2) || checkVertical(posArray2) || checkDiagonal(posArray2);
+            return checkHorizontal(player2PositionsArray) || checkVertical(player2PositionsArray) || checkDiagonal(player2PositionsArray);
         }
     }
 
     public boolean draw() {
-        if ((posArray1.size() + posArray2.size()) == 9) {
+        if ((player1PositionsArray.size() + player2PositionsArray.size()) == 9) {
             return true;
         }
 
         return false;
     }
 
-    public boolean add(int player, Integer pos) {
+    public boolean addPosition(int player, Integer pos) {
         if ((pos > 8) || (pos < 0)) {
             return false;
         }
 
-        if (!isConflict(pos)) {
+        if (!checkConflict(pos)) {
             if (player == 1) {
-                posArray1.add(pos);
+                player1PositionsArray.add(pos);
             } else {
-                posArray2.add(pos);
+                player2PositionsArray.add(pos);
             }
             return true;
         }
@@ -42,17 +44,17 @@ public class Logic {
         return false;
     }
 
-    public void reset() {
-        posArray1.clear();
-        posArray2.clear();
+    public void resetArrays() {
+        player1PositionsArray.clear();
+        player2PositionsArray.clear();
     }
 
-    public ArrayList<Integer> getPosArray1() {
-        return posArray1;
+    public ArrayList<Integer> getPlayer1PositionsArray() {
+        return player1PositionsArray;
     }
 
-    public ArrayList<Integer> getPosArray2() {
-        return posArray2;
+    public ArrayList<Integer> getPlayer2PositionsArray() {
+        return player2PositionsArray;
     }
 
     private boolean checkHorizontal(ArrayList<Integer> posArray) {
@@ -110,7 +112,7 @@ public class Logic {
         return counter0 == 3 || counter1 == 3;
     }
 
-    private boolean isConflict(Integer pos) {
-        return posArray1.contains(pos) || posArray2.contains(pos);
+    private boolean checkConflict(Integer pos) {
+        return player1PositionsArray.contains(pos) || player2PositionsArray.contains(pos);
     }
 }

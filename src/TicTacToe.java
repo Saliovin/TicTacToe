@@ -1,3 +1,5 @@
+//The main class of the program. Handles the other classes to output the game.
+
 public class TicTacToe {
     private Logic gameLogic;
     private UI userInterface;
@@ -52,11 +54,11 @@ public class TicTacToe {
     public String getCurrentState() {
         StringBuilder state = new StringBuilder("         ");
 
-        for(int i = 0; i < gameLogic.getPosArray1().size(); i++) {
-            state.setCharAt(gameLogic.getPosArray1().get(i), 'X');
+        for(int i = 0; i < gameLogic.getPlayer1PositionsArray().size(); i++) {
+            state.setCharAt(gameLogic.getPlayer1PositionsArray().get(i), 'X');
         }
-        for(int i = 0; i < gameLogic.getPosArray2().size(); i++) {
-            state.setCharAt(gameLogic.getPosArray2().get(i), '•');
+        for(int i = 0; i < gameLogic.getPlayer2PositionsArray().size(); i++) {
+            state.setCharAt(gameLogic.getPlayer2PositionsArray().get(i), 'O');
         }
 
         return state.toString();
@@ -64,7 +66,7 @@ public class TicTacToe {
 
     private void startGame() {
         int playerTurn = 1;
-        gameLogic.reset();
+        gameLogic.resetArrays();
 
         while(true) {
             userInterface.printState();
@@ -72,15 +74,15 @@ public class TicTacToe {
             String state = this.getCurrentState();
             Integer move;
 
-            if(((playerTurn == 1) && player1AI) || ((playerTurn == 2) && player2AI)) {
+            if(((playerTurn == 1) && player1AI) || ((playerTurn == 2) && player2AI)) { //If AI is on for the current player, make the AI object move.
                 move = computer.move(playerTurn, state, trainingMode);
-                gameLogic.add(playerTurn, move);
+                gameLogic.addPosition(playerTurn, move);
             }
             else {
                 while(true) {
                     move = userInterface.getPosition();
 
-                    if(gameLogic.add(playerTurn, move)) {
+                    if(gameLogic.addPosition(playerTurn, move)) {
                         break;
                     }
 

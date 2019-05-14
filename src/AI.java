@@ -1,142 +1,135 @@
+// The class that handles the AI.
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class AI {
-    private HashMap<String, ArrayList<Integer>> data1;
-    private HashMap<String, ArrayList<Integer>> data2;
-    private HashMap<String, Integer> tempData1;
-    private HashMap<String, Integer> tempData2;
+    private HashMap<String, ArrayList<Integer>> player1Data;
+    private HashMap<String, ArrayList<Integer>> player2Data;
+    private HashMap<String, Integer> player1TempData;
+    private HashMap<String, Integer> player2TempData;
     private Random rng;
-    private int savedGames1;
-    private int savedGames2;
+    private int player1SavedGamesCounter;
+    private int player2SavedGamesCounter;
 
     public AI() {
-        data1 = new HashMap<>();
-        data2 = new HashMap<>();
-        tempData1 = new HashMap<>();
-        tempData2 = new HashMap<>();
+        player1Data = new HashMap<>();
+        player2Data = new HashMap<>();
+        player1TempData = new HashMap<>();
+        player2TempData = new HashMap<>();
         rng = new Random();
-        savedGames1 = 0;
-        savedGames2 = 0;
+        player1SavedGamesCounter = 0;
+        player2SavedGamesCounter = 0;
     }
 
     public int move(int player, String state, boolean trainingMode) {
-        if(!trainingMode) {
+        if(!trainingMode) { //If training mode is on, the method skips checks and returns a random unused space on the board..
             if(player == 1) {
-                if(data1.containsKey(state)) {
-                    return data1.get(state).get(rng.nextInt(data1.get(state).size()));
+                if(player1Data.containsKey(state)) { //If data contains an exact match of the current state, the method returns a random move from the linked array.
+                    return player1Data.get(state).get(rng.nextInt(player1Data.get(state).size()));
                 }
             }
             else {
-                if(data2.containsKey(state)) {
-                    return data2.get(state).get(rng.nextInt(data2.get(state).size()));
+                if(player2Data.containsKey(state)) {
+                    return player2Data.get(state).get(rng.nextInt(player2Data.get(state).size()));
                 }
             }
         }
 
         ArrayList<Integer> spaces = new ArrayList<>();
-        for(int i = 0; i < state.length(); i++) {
+        for(int i = 0; i < state.length(); i++) { //Creates an array of unused spaces on the board.
             if(state.charAt(i) == ' ') {
                 spaces.add(i);
             }
         }
 
-        return spaces.get(rng.nextInt(spaces.size()));
+        return spaces.get(rng.nextInt(spaces.size())); //Returns a random unused space from the created array.
     }
 
     public void addTempData(String state, Integer move, int player) {
         if(player == 1) {
-            tempData1.put(state, move);
+            player1TempData.put(state, move);
         }
         else {
-            tempData2.put(state, move);
+            player2TempData.put(state, move);
         }
     }
 
     public void addData(int player) {
         boolean addedNew = false;
+        HashMap<String, ArrayList<Integer>> playerData;
+        HashMap<String, Integer> playerTempData;
 
         if(player == 1) {
-            for(String state: tempData1.keySet()) {
-                if(data1.containsKey(state)) {
-                    if(!data1.get(state).contains(tempData1.get(state))) {
-                        data1.get(state).add(tempData1.get(state));
-                        if(!addedNew) {
-                            addedNew = true;
-                        }
-                    }
-                }
-                else {
-                    ArrayList<Integer> moves = new ArrayList<>();
-                    moves.add(tempData1.get(state));
-                    data1.put(state, moves);
-                    if(!addedNew) {
+            playerData = player1Data;
+            playerTempData = player1TempData;
+        }
+        else {
+            playerData = player2Data;
+            playerTempData = player2TempData;
+        }
+
+        for(String state: playerTempData.keySet()) { //Migrates the temp data saved to the true data hashmap.
+            if(playerData.containsKey(state)) {
+                if(!playerData.get(state).contains(playerTempData.get(state))) {
+                    playerData.get(state).add(playerTempData.get(state));
+                    if(!addedNew) { //If addedNew is false, turns true to indicate a new game is saved
                         addedNew = true;
                     }
                 }
             }
-
-            if(addedNew) {
-                savedGames1++;
-            }
-        }
-        else {
-            for(String state: tempData2.keySet()) {
-                if(data2.containsKey(state)) {
-                    if(!data2.get(state).contains(tempData2.get(state))) {
-                        data2.get(state).add(tempData2.get(state));
-                        if(!addedNew) {
-                            addedNew = true;
-                        }
-                    }
+            else {
+                ArrayList<Integer> moves = new ArrayList<>();
+                moves.add(playerTempData.get(state));
+                playerData.put(state, moves);
+                if(!addedNew) {
+                    addedNew = true;
                 }
-                else {
-                    ArrayList<Integer> moves = new ArrayList<>();
-                    moves.add(tempData2.get(state));
-                    data2.put(state, moves);
-                    if(!addedNew) {
-                        addedNew = true;
-                    }
-                }
-            }
-
-            if(addedNew) {
-                savedGames2++;
             }
         }
 
-        tempData1.clear();
-        tempData2.clear();
+        if(addedNew) {
+            if(player == 1) {
+                player1SavedGamesCounter++;
+            }
+            else {
+                player2SavedGamesCounter++;
+            }
+        }
+
+        player1TempData.clear();
+        player2TempData.clear();
     }
 
-    public int getSavedGames1() {
-        return savedGames1;
-    }
-
-    public int getSavedGames2() {
-        return savedGames2;
-    }
-
-    public int getStates(int player) {
+    public int getSavedGamesCount(int player) {
         if(player == 1) {
-            return data1.keySet().size();
+            return player1SavedGamesCounter;
         }
         else {
-            return data2.keySet().size();
+            return player2SavedGamesCounter;
         }
     }
 
-    public int getMoves(int player) {
+    public int getStatesCount(int player) {
+        if(player == 1) {
+            return player1Data.keySet().size();
+        }
+        else {
+            return player2Data.keySet().size();
+        }
+    }
+
+    public int getMovesCount(int player) {
         int counter = 0;
 
         if(player == 1) {
-            for(ArrayList i : data1.values()) {
+            for(ArrayList i : player1Data.values()) {
                 counter += i.size();
             }
         }
         else {
-            for(ArrayList i : data2.values()) {
+            for(ArrayList i : player2Data.values()) {
                 counter += i.size();
             }
         }
